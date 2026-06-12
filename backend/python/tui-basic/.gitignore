@@ -1,0 +1,40 @@
+# Python 字节码 / 缓存
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 打包 / 构建产物
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+
+# 虚拟环境
+.venv/
+venv/
+env/
+ENV/
+
+# uv
+.uv/
+
+# 测试 / 覆盖率 / 类型检查缓存
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+
+# 日志 / 临时文件
+*.log
+*.tmp
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
