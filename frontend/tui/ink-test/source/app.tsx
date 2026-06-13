@@ -1,27 +1,23 @@
-import React from 'react';
-import {Text, Box} from 'ink';
+import React, {useEffect, useState} from 'react';
+import {Box, Text} from 'ink';
 
-type Props = {};
+export default function App() {
+  const [count, setCount] = useState(0);
 
-export default function App({}: Props) {
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCount(prev => prev + 1);
+    }, 100);
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <>
-      <Box
-        justifyContent="center"
-        borderStyle="single"
-        borderBottom={false}
-        borderTopColor={'green'}
-      >
-        <Text>普通单线</Text>
+    <Box flexDirection="column" borderStyle="round" paddingX={1} width={42}>
+      <Box justifyContent="space-between">
+        <Text color="magenta">Counter</Text>
+        <Text dimColor>{count}</Text>
       </Box>
-      <Box
-        justifyContent="center"
-        borderStyle="double"
-        borderTop={false}
-        borderBottomColor={'blue'}
-      >
-        <Text>双线</Text>
-      </Box>
-    </>
+    </Box>
   );
 }
