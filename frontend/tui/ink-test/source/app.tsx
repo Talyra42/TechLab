@@ -6,13 +6,21 @@ type Props = {};
 export default function App({}: Props) {
   return (
     <>
-      <Box width={7} flexDirection="column">
-        {/* 后面省略号 */}
-        <Text wrap="truncate-end">Hello World</Text>
-        {/* 前面省略号 */}
-        <Text wrap="truncate-start">Hello World</Text>
-        {/* 中间省略号 */}
-        <Text wrap="truncate-middle">Hello World</Text>
+      <Box
+        justifyContent="center"
+        borderStyle="single"
+        borderBottom={false}
+        borderTopColor={'green'}
+      >
+        <Text>普通单线</Text>
+      </Box>
+      <Box
+        justifyContent="center"
+        borderStyle="double"
+        borderTop={false}
+        borderBottomColor={'blue'}
+      >
+        <Text>双线</Text>
       </Box>
     </>
   );
