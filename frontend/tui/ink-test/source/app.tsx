@@ -1,30 +1,34 @@
-import React, {useEffect, useState} from 'react';
-import {Box, Spacer, Text, useApp} from 'ink';
+import React, {useState} from 'react';
+import {Box, Text, useApp, useInput} from 'ink';
+
+const items = ['查看状态', '部署', '回滚', '退出'];
 
 export default function App() {
-  const [counter, setCounter] = useState(0);
-
-  // 获取退出方法
+  const [selected, setSelected] = useState(0);
   const {exit} = useApp();
 
-  useEffect(() => {
-    const timer = setInterval(() => setCounter(prev => prev + 1), 100);
-    return () => clearInterval(timer);
-  }, []);
-
-  // 监听 到达一个数字就退出程序
-  useEffect(() => {
-    if (counter >= 10) exit();
-  }, [counter, exit]);
+  useInput((input, key) => {
+    if (key.upArrow) {
+      setSelected(prev => (prev - 1 >= 0 ? prev - 1 : prev));
+    }
+    if (key.downArrow) {
+      setSelected(prev => (prev + 1 < items.length ? prev + 1 : prev));
+    }
+    if (key.return) {
+      if (items[selected] == '退出') exit();
+    }
+    if (input === 'q') exit();
+  });
 
   return (
-    <Box borderStyle={'round'} marginX={2} flexDirection="column">
-      <Box width={'100%'}>
-        <Text>Counter</Text>
-        <Spacer />
-        <Text>{counter}</Text>
-      </Box>
-      {counter >= 10 && <Text color={'green'}>Done !</Text>}
+    <Box borderStyle={'round'} flexDirection="column" width={35}>
+      <Text>用 上下 选择，回车确认，q 退出</Text>
+      {items.map((item, i) => (
+        <Text key={item} color={i == selected ? 'green' : undefined}>
+          {i === selected ? '> ' : '  '}
+          {item}
+        </Text>
+      ))}
     </Box>
   );
 }
