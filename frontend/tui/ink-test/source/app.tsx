@@ -1,23 +1,30 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Text} from 'ink';
+import {Box, Spacer, Text, useApp} from 'ink';
 
 export default function App() {
-  const [count, setCount] = useState(0);
+  const [counter, setCounter] = useState(0);
+
+  // 获取退出方法
+  const {exit} = useApp();
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCount(prev => prev + 1);
-    }, 100);
-
+    const timer = setInterval(() => setCounter(prev => prev + 1), 100);
     return () => clearInterval(timer);
   }, []);
 
+  // 监听 到达一个数字就退出程序
+  useEffect(() => {
+    if (counter >= 10) exit();
+  }, [counter, exit]);
+
   return (
-    <Box flexDirection="column" borderStyle="round" paddingX={1} width={42}>
-      <Box justifyContent="space-between">
-        <Text color="magenta">Counter</Text>
-        <Text dimColor>{count}</Text>
+    <Box borderStyle={'round'} marginX={2} flexDirection="column">
+      <Box width={'100%'}>
+        <Text>Counter</Text>
+        <Spacer />
+        <Text>{counter}</Text>
       </Box>
+      {counter >= 10 && <Text color={'green'}>Done !</Text>}
     </Box>
   );
 }
