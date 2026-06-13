@@ -3,4 +3,11 @@ import React from 'react';
 import {render} from 'ink';
 import App from './app.js';
 
-render(<App />);
+const {waitUntilExit} = render(<App />);
+
+try {
+  await waitUntilExit();
+} catch (err) {
+  console.error(err);
+  process.exitCode = 1;
+}

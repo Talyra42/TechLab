@@ -1,34 +1,40 @@
-import React, {useState} from 'react';
-import {Box, Text, useApp, useInput} from 'ink';
+import React, {FC, useState} from 'react';
+import {Box, Text, useFocus, useInput} from 'ink';
 
-const items = ['查看状态', '部署', '回滚', '退出'];
+const TextField: FC<{label: string}> = ({label}) => {
+  const {isFocused} = useFocus();
+  const [value, setValue] = useState('');
 
-export default function App() {
-  const [selected, setSelected] = useState(0);
-  const {exit} = useApp();
-
-  useInput((input, key) => {
-    if (key.upArrow) {
-      setSelected(prev => (prev - 1 >= 0 ? prev - 1 : prev));
-    }
-    if (key.downArrow) {
-      setSelected(prev => (prev + 1 < items.length ? prev + 1 : prev));
-    }
-    if (key.return) {
-      if (items[selected] == '退出') exit();
-    }
-    if (input === 'q') exit();
-  });
+  useInput(
+    (input, key) => {
+      if (key.backspace || key.delete) {
+        setValue(prev => prev.slice(0, -1));
+      } else if (input && !key.ctrl && !key.meta) {
+        setValue(prev => prev + input);
+      }
+    },
+    {
+      isActive: isFocused,
+    },
+  );
 
   return (
+    <Box>
+      <Text color={isFocused ? 'green' : undefined}>
+        {label}: {value}
+        {isFocused ? '|' : ''}
+      </Text>
+    </Box>
+  );
+};
+
+export default function App() {
+  return (
     <Box borderStyle={'round'} flexDirection="column" width={35}>
-      <Text>用 上下 选择，回车确认，q 退出</Text>
-      {items.map((item, i) => (
-        <Text key={item} color={i == selected ? 'green' : undefined}>
-          {i === selected ? '> ' : '  '}
-          {item}
-        </Text>
-      ))}
+      <Text dimColor>用 Tab 切换输入框。</Text>
+      <TextField label="用户名" />
+      <TextField label="密码" />
+      <TextField label="邮箱" />
     </Box>
   );
 }
